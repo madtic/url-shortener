@@ -1,4 +1,4 @@
-name: CodeQL
+name: "CodeQL Advanced"
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - main
       - master
   schedule:
-    - cron: "31 4 * * 1"
+    - cron: '27 20 * * 4'
   workflow_dispatch:
 
 permissions:

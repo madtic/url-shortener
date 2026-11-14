@@ -10,4 +10,5 @@ Michael Tichelmann
 7. .env Datei mit variablen port geänder auf 5000 weil 8080 auf dev pc schon vergeben
 8. Testen mit `docker compose up --build -d` dann swagger auf http://localhost:5000/swagger/index.html
 9. Datei für github action erstellt die den container baut
-10. 
+10. CodeQL aktiviert für repo `Setting -> Advanced Security -> CodeQL analysis`
+11. 
