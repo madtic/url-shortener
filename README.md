@@ -40,3 +40,22 @@ url-shortener/
 
 Docker with Compose v2 (the `docker compose` command). To run the
 API outside Docker you need the .NET 10 SDK and a PostgreSQL 17 instance.
+
+## Run with Docker Compose
+
+From the project directory, create the local environment file and start the API
+and database:
+
+```powershell / cmd
+docker compose up --build -d
+```
+
+Open `http://localhost:8080/swagger`. The API waits for PostgreSQL to become
+healthy, then applies its migrations and seeds the sample links. Check startup
+logs with `docker compose logs -f urlshortener`.
+
+To stop the services, run `docker compose down`. The database is kept in the
+`postgres-data` volume; to delete it and all stored links as well, run
+`docker compose down -v`. If host port 8080 is already in use, change
+`APP_PORT` in `.env` (for example, to `8082`) and use that port in the URL.
+The example database password is for local development only.
