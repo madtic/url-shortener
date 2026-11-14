@@ -11,4 +11,4 @@ Michael Tichelmann
 8. Testen mit `docker compose up --build -d` dann swagger auf http://localhost:5000/swagger/index.html
 9. Datei für github action erstellt die den container baut
 10. CodeQL aktiviert für repo `Setting -> Advanced Security -> CodeQL analysis`
-11. 
+11. Dockerfile.inefficient ist erster versuch -> Dockerfile effizienter gemachht nur ein build 
