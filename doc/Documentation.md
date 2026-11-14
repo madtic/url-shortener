@@ -7,6 +7,7 @@ Michael Tichelmann
 4. Dockerfile testen mit `docker build -t url-shortener .`
 5. Starten von Container mit `docker run -d -p 5000:8080 --name url-shortener url-shortener`
 6. compose.yaml erstelt mit postgres db wie bei counter app
-7. .env datei mit variablen port geänder auf 5000 weil 8080 auf dev pc schon vergeben
-8. testen mit `docker compose up --build -d` dann swagger auf http://localhost:5000/swagger/index.html
-9. 
+7. .env Datei mit variablen port geänder auf 5000 weil 8080 auf dev pc schon vergeben
+8. Testen mit `docker compose up --build -d` dann swagger auf http://localhost:5000/swagger/index.html
+9. Datei für github action erstellt die den container baut
+10. 
