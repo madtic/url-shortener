@@ -84,6 +84,44 @@ jobs:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload image SBOM artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: image-sbom-${{ steps.meta.outputs.version }}
+          path: sbom.spdx.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Show SBOM manifest
+        if: github.event_name != 'pull_request'
+        env:
+          SBOM_PATH: sbom.spdx.json
+          ARTIFACT_NAME: image-sbom-${{ steps.meta.outputs.version }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          sbom = json.loads(Path(os.environ["SBOM_PATH"]).read_text())
+          summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
+
+          def cell(value):
+              return str(value or "N/A").replace("\\", "\\\\").replace("|", "\\|").replace("`", "\\`").replace("\n", " ").replace("<", "&lt;").replace(">", "&gt;")
+
+          with summary.open("a", encoding="utf-8") as output:
+              output.write("## Image SBOM manifest\n\n")
+              output.write(f"- **Image:** `ghcr.io/{os.environ['GITHUB_REPOSITORY']}`\n")
+              output.write(f"- **Digest:** `{os.environ['IMAGE_DIGEST']}`\n")
+              output.write(f"- **SBOM format:** SPDX {cell(sbom.get('spdxVersion'))}\n")
+              output.write(f"- **Download:** workflow artifact `{cell(os.environ['ARTIFACT_NAME'])}` (available for 90 days)\n\n")
+              output.write("| Package | Version | SPDX ID |\n|---|---|---|\n")
+              for package in sbom.get("packages", []):
+                  output.write(f"| {cell(package.get('name'))} | {cell(package.get('versionInfo'))} | {cell(package.get('SPDXID'))} |\n")
+          PY
+
       - name: Attest image SBOM
         if: github.event_name != 'pull_request'
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
