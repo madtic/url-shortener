@@ -15,4 +15,7 @@ RUN dotnet publish "./UrlShortener.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+LABEL org.opencontainers.image.source="https://github.com/madtic/url-shortener" \
+      org.opencontainers.image.title="Url-shortener" \
+      org.opencontainers.image.description="A small ASP.NET Core URL shortener API"
 ENTRYPOINT ["dotnet", "UrlShortener.dll"]
