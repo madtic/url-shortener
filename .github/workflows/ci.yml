@@ -21,6 +21,7 @@ jobs:
       packages: write
       id-token: write
       attestations: write
+      artifact-metadata: write
 
     steps:
       - name: Check out repository
@@ -85,7 +86,7 @@ jobs:
 
       - name: Attest image SBOM
         if: github.event_name != 'pull_request'
-        uses: actions/attest-sbom@v2
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.build.outputs.digest }}
